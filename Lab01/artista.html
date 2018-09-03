@@ -1,0 +1,52 @@
+<!doctype html>
+    
+<div class="jumbotron rightJumbotron">
+<h2 class="title">ADICIONAR ARTISTA</h2>
+<form name="artistaForm">
+<input class="form-control" type="text" ng-model="artista.nome" name="nome" placeholder="Nome" ng-required="true"/>
+<input class="form-control" type="text" ng-model="artista.imagem" name="imagem" placeholder="Imagem">
+</form>
+
+<div ng-show="existe" class="alert alert-danger">
+    Nome já utilizado.
+</div>
+<div ng-show="adicionou" class="alert alert-success">
+    Artista adicionada com sucesso.
+</div>
+
+<button class="btn myBtn btn-block" ng-click="adicionarArtista(artista)" ng-disabled="!artista.nome">ADICIONAR ARTISTA</button>
+</div>
+
+<div class="jumbotron leftJumbotron">
+
+<h2 class="title">{{app}}</h2>
+<div ng-hide="jaFavoritou" class="alert alert-info">
+    Info: Para favoritar artistas, clique na sua foto.
+</div>
+<input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
+<table ng-show="artistas.length > 0" class="table">
+    <tr>
+        <th><a ng-click="ordenarPor('nome')">NOME</a></th>
+        <th></th>
+        <th>ÁLBUNS</th>
+        <th>ÚLTIMA TOCADA</th>
+        <th>NOTA</th>
+    </tr>
+
+    <tr ng-class="{'selecionado': artista.favorito}" ng-repeat="artista in artistas | filter:criterioDeBusca | orderBy:criterioDeOrdenacao">
+        <td><h4>{{artista.nome}}</h4></td>
+        <td><img src={{artista.imagem}} class="img-circle" ng-click="favoritarArtistas(artista)"></td>
+        <td>
+            <ul ng-repeat="album in artista.albuns">
+                <li>{{$index + 1}}. {{album.nome}}</li>
+            </ul>
+        </td>
+        <td>{{artista.ultima}}</td>
+        <td>
+            <select class="form-control" ng-model="artista.nota" name="nota" ng-options="nota for nota in notas">
+                <option value="">Nota</option>
+            </select>
+        </td>
+    </tr>
+</table>
+</div>

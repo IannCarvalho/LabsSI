@@ -1,0 +1,37 @@
+<!doctype html>
+<div class = "jumbotron rightJumbotron">
+        <h2 class="title">ADICIONAR PLAYLIST</h2>
+    <form name="playlistForm">
+        <input class="form-control" type="text" ng-model="playlist.nome" name="nome" placeholder="Nome" ng-required="true"/>
+    </form>
+
+    <div ng-show="existe" class="alert alert-danger">
+        Já existe uma playlist com esse nome.
+    </div>
+    <div ng-show="adicionou" class="alert alert-success">
+        Playlist adicionada com sucesso.
+    </div>
+
+    <button class="btn myBtn btn-block" ng-click="adicionarPlaylist(playlist)" ng-disabled="!playlist.nome">CRIAR PLAYLIST</button>
+
+</div>
+<div class = "jumbotron leftJumbotron">
+        <h2 class="title">{{app}}</h2>
+        <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
+        <table ng-show="playlists.length > 0" class="table">
+            <tr>
+                <th>NOME</a></th>
+                <th>MÚSICAS</a></th>
+            </tr>
+            <tr ng-repeat="playlist in playlists | filter:criterioDeBusca">
+                <td> <button type="button" class="btn myBtn" ng-click="removePlaylist(playlist)">-</button> {{playlist.nome}}</td>
+                <td><ul>
+                    <li ng-repeat="msc in playlist.mscs">
+                        <button type="button" class="btn myBtn" ng-click="removeMusicaDePlaylist(playlist, msc)">-</button> {{$index + 1}}. {{msc.nome}}
+                    </li>
+                </ul></td>       
+            </tr>
+            
+        </table>
+</div> 
+</div>

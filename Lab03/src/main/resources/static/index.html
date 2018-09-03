@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="main">
+
+   <head>
+      <meta charset="UTF-8"></meta>
+      <title>Musiteca</title>
+      <script src="node_modules/angular/angular.min.js"></script> 
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.js"></script>
+      <link rel="stylesheet" type="text/css" href="css/app.css"></link>
+      <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css"></link>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="js/main.js"></script> 
+      <script src="js/services/service-artistas.js"></script> 
+      <script src="js/services/service-musicas.js"></script>
+      <script src="js/services/service-clientes.js"></script>
+      <script src="js/services/service-playlists.js"></script>
+      <script src="js/controllers/clientes-ctrl.js"></script>
+      <script src="js/controllers/artistas-ctrl.js"></script> 
+      <script src="js/controllers/musicas-ctrl.js"></script> 
+      <script src="js/controllers/playlists-ctrl.js"></script>
+   </head>
+   
+   <body>
+      <header>
+         <div class="jumbotron">
+            <h1 class="titulo">Musiteca</h1>
+         </div>
+      </header>
+      <div class="container" ng-controller="clientes-ctrl">
+         <div class="jumbotron rightJumbotron">
+            <form name="clienteForm" class="form">
+               <h3>Cadastre-se como Usuário:</h3>
+               <input class="form-control" type="text" ng-model="clienteForm.email" placeholder="Insira um email válido" ng-required="true"></input>
+               <input class="form-control" type="text" ng-model="clienteForm.nome" placeholder="Insira um nome de usuário" ng-required="true"></input>
+               <input class="form-control" type="text" ng-model="clienteForm.senha" placeholder="Insira sua senha" ng-required="true"></input>
+               <button class="btn myBtn btn-block" ng-disabled="!clienteForm.email || !clienteForm.nome || !clienteForm.senha" ng-click="addCliente(clienteForm)">Cadastrar Usuário</button>
+            </form>
+         </div>
+         <div class="jumbotron leftJumbotron">
+            <form name="loginForm" class="form">
+               <h3>Logar-se como Usuário:</h3>
+               <input class="form-control" type="text" ng-model="loginForm.email" placeholder="Insira seu email"></input>
+               <input class="form-control" type="text" ng-model="loginForm.senha" placeholder="Insira sua senha"></input>
+               <button class="btn myBtn btn-block" ng-disabled="!loginForm.email || !loginForm.senha" ng-click="logarCliente(loginForm)">Logar Usuário</button>
+            </form>
+         </div>
+      </div>
+      <div class="container" ng-controller="artistas-ctrl">
+         <div class="jumbotron rightJumbotron">
+            <form name="artistaForm" class="form">
+               <h3>Adicione um Artista:</h3>
+               <input class="form-control" type="text" ng-model="artistaForm.nome" placeholder="Insira o nome do artista"></input>
+               <input class="form-control" type="text" ng-model="artistaForm.url" placeholder="Insira uma url com a foto do artista"></input>
+               <button class="btn myBtn btn-block" ng-disabled="!artistaForm.nome || !artistaForm.url" ng-click="addArtista(artistaForm)">Adicionar Artista</button>
+            </form>
+         </div>
+         <div class="jumbotron leftJumbotron">
+            <input ng-show="artistas.length > 0" class="form form-control" type="text" ng-model="filtroArtistas" placeholder="Filtre os artistas pelo nome"></input>
+            <table ng-show="artistas.length > 0" class="table">
+               <tr class="cabecalho">
+                  <th>Notas:</th>
+                  <th>Favoritado:</th>
+                  <th>Imagem:</th>
+                  <th>Nome do Artista:</th>
+                  <th>Albuns:</th>
+                  <th>Recentemente:</th>
+               </tr>
+               <tr class="artista" ng-class="{'selecionado': artista.favoritado}" ng-repeat="artista in artistas | filter: filtroArtistas">
+                  <td><input class="form-control" type="text" ng-model="artista.nota" placeholder="Nota"></input></td>
+                  <td><input class="artistaFavoritado" type="checkbox" ng-model="artista.favoritado" ng-click="favoritar(artista)"></input></td>
+                  <td><img src="{{artista.url}}" class="img-circle"></img></td>
+                  <td>{{artista.nome}}</td>
+                  <td>
+                     <ul ng-repeat="album in artista.albuns">
+                        <li>{{album.nome}}</li>
+                     </ul>
+                  </td>
+                  <td>
+                     <select class="form-control" ng-model="artista.recente" >
+                        <option value="">Selecione uma música</option>
+                        <option ng-repeat="musica in artista.musicasRecentes">{{musica.nome}}</option>
+                     </select>
+                  </td>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <div class="container" ng-controller="musicas-ctrl">
+         <div class="jumbotron rightJumbotron">
+            <form name="musicaForm" class="form">
+               <h3>Adicione uma Música:</h3>
+               <input class="form-control" type="text" ng-model="musicaForm.nome" placeholder="Insira o nome da música"></input>
+               <select class="form-control" ng-model="musicaForm.artista" ng-required="true">
+                  <option value="">Selecione um artista</option>
+                  <option ng-repeat="artista in artistas">{{artista.nome}}</option>
+               </select>
+               <input class="form-control" type="text" ng-model="musicaForm.album" placeholder="Insira o nome do álbum"></input>
+               <input class="form-control" type="text" ng-model="musicaForm.lancamento" placeholder="Insira o ano de lancamento"></input>
+               <input class="form-control" type="text" ng-model="musicaForm.duracao" placeholder="Insira a duração da música"></input>
+               <button class="btn myBtn btn-block" ng-disabled="!musicaForm.nome || !musicaForm.artista || !musicaForm.album || !musicaForm.lancamento || !musicaForm.duracao" ng-click="addMusica(musicaForm)">Adicionar Música</button>
+            </form>
+         </div>
+         <div class="jumbotron leftJumbotron">
+            <table ng-show="musicas.length > 0" class="table">
+               <tr class="cabecalho">
+                  <th>Nome da Música:</th>
+                  <th>Artista:</th>
+                  <th>Álbum:</th>
+                  <th>Lançamento:</th>
+                  <th>Duração:</th>
+               </tr>
+               <tr ng-repeat="musica in musicas">
+                  <td>{{musica.nome}}</td>
+                  <td>{{musica.artista}}</td>
+                  <td>{{musica.album}}</td>
+                  <td>{{musica.lancamento}}</td>
+                  <td>{{musica.duracao}}</td>
+               </tr>
+            </table>
+         </div>
+      </div>
+      <div class="container" ng-controller="playlists-ctrl">
+         <div class="jumbotron rightJumbotron">
+            <form name="playlistForm" class="form">
+               <h3>Personalize suas Playlists:</h3>
+               <select class="form-control" ng-model="playlistForm.musica">
+                  <option value="">Selecione uma música</option>
+                  <option ng-repeat="musica in musicas">{{musica.nome}}</option>
+               </select>
+               <input class="form-control" type="text" ng-model="playlistForm.nome" placeholder="Insira o nome da playlist"></input>
+               <button class="btn myBtn btn-block" ng-disabled="!playlistForm.nome || !playlistForm.musica" ng-click="addMusicaPlaylist(playlistForm)">Adicionar Música</button>
+            </form>
+         </div>
+         <div class="jumbotron leftJumbotron">
+            <table name="playlistTable" ng-show="playlists.length > 0" class="table">
+               <tr class="cabecalho">
+                  <th>Nome da Playlist:</th>
+                  <th>Músicas:</th>
+               </tr>
+               <tr ng-repeat="playlist in playlists">
+                  <td>
+                     <ul>
+                        <li> <button type="button" class="btn myBtn" ng-click="removerPlaylist(playlist.nome)">-</button>  {{playlist.nome}}</li>
+                     </ul>
+                  </td>
+                  <td>
+                     <ul ng-repeat="musica in playlist.tracklist">
+                        <li> <button type="button" class="btn myBtn" ng-click="removerMusica(musica, playlist.nome)">-</button>  {{musica}}</li>
+                     </ul>
+                  </td>
+               </tr>
+            </table>
+         </div>
+      </div>
+   </body>
+</html>

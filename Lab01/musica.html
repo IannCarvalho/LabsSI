@@ -1,0 +1,59 @@
+<!doctype html>
+    <div class = "jumbotron rightJumbotron">
+        <h2 class="title">ADICIONAR MÚSICA</h2>
+        <form name="musicaForm">
+            <input class="form-control" type="text" ng-model="musica.nome" name="nome" placeholder="Nome" ng-required="true"/>
+            <select class="form-control" ng-model="artista" name="artista" ng-options="artista.nome for artista in artistas" ng-required="true">
+                <option value="">SELECIONE UM ARTISTA</option>
+            </select>
+            <input class="form-control" type="text" ng-model="album" name="album" placeholder="Álbum" ng-required="true"/>
+            <input class="form-control" type="text" ng-model="musica.duracao" name="duracao" placeholder="Duração" ng-required="true" ng-pattern="/^\d{2}:\d{2}$/"/>
+            <input class="form-control" type="text" ng-model="musica.ano" name="ano" placeholder="Ano" ng-required="true" ng-pattern="/^\d{4}$/"/>
+        </form>
+        
+        <div ng-show="existe" class="alert alert-danger">
+            Essa música já existe nesse álbum.
+        </div>
+        <div ng-show="musicaForm.ano.$error.pattern" class="alert alert-danger">
+            Por favor, digite um ano válida no formato: "DDDD".
+        </div>
+        <div ng-show="musicaForm.duracao.$error.pattern" class="alert alert-danger">
+            Por favor, digite uma duração válida no formato: "DD:DD".
+        </div>
+        <div ng-show="adicionou" class="alert alert-success">
+                Música adicionada com sucesso.
+        </div>
+        
+        <button class="btn myBtn btn-block" ng-click="adicionarMusica(artista, musica, album)" ng-disabled="!musica.nome || !album || !musica.ano || !musica.duracao || !artista">ADICIONAR MÚSICA</button> 
+    </div>
+    
+    
+    
+    <div class = "jumbotron leftJumbotron">
+        <h2 class="title">{{app}}</h2>
+        <input class="form-control" type="text" ng-model="criterioDeBusca" placeholder="O que você está buscando?">
+        <table ng-show="todasAsMusicas(artistas).length > 0" class="table">
+            <tr>
+                <th>NOME</a></th>
+                <th>ANO</a></th>
+                <th>DURAÇÃO</a></th>
+            </tr>
+            <tr ng-repeat="musica in todasAsMusicas(artistas) | filter:criterioDeBusca">
+                <td><div class="dropdown">
+                    <button class="btn myBtn dropdown-toggle" type="button" data-toggle="dropdown">+
+                        <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li ng-repeat="playlist in playlists"><a ng-click="adicionarMusicaEmPlaylist(playlist, musica)">{{playlist.nome}}</a></li>
+                        </ul>{{musica.nome}}</div>
+                    </td>
+                    <td>{{musica.ano}}</td>
+                    <td>{{musica.duracao}}</td>
+                </tr>
+                
+        </table>
+
+        <div ng-show="temMusica" class="alert alert-danger">
+            Música já adiciona em playlist.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,86 @@
+@font-face{
+    font-family: 'fonte';
+    src: url('fonte.ttf') format('truetype')
+}
+
+h1 {
+    text-align: center;
+}
+
+ul{
+    list-style: none !important;
+}
+
+.jumbotron{
+    background-color: rgba(248, 248, 255, 0.329) !important;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.title{
+    text-align: center !important;
+}
+
+.img-circle{
+    width: 100px;
+    height: 100px;
+}
+
+.table{
+    margin-top: 20px;
+}
+
+.form-control{
+    margin-bottom: 5px;
+}
+
+.selecionado{
+    background-color: rgba(248, 248, 255, 0.274) !important;
+}
+
+.rightJumbotron{
+    width: 350px;
+    float: left;
+}
+
+.leftJumbotron{
+    margin-left: 50px;
+    width: 700px;
+    float: left;
+}
+
+body {
+    font-family: "fonte" !important;
+    background: linear-gradient(0deg, rgb(0, 255, 242) , rgb(0, 0, 0)) no-repeat center center fixed !important; 
+    -webkit-background-size: cover; 
+    -moz-background-size: cover; 
+    -o-background-size: cover; 
+    background-size: cover; 
+}
+
+a{
+    text-decoration: none !important;
+    color: black !important;
+}
+
+a:hover{
+    background-color: rgba(248, 248, 255, 0.651) !important;
+}
+
+.navbar-inverse{
+    background-color: rgba(248, 248, 255, 0.651) !important;
+}
+
+input{
+    background-color: rgba(248, 248, 255, 0.651) !important;
+}
+
+select{
+    background-color: rgba(248, 248, 255, 0.651) !important;
+}
+
+.myBtn{
+    background-color: rgba(248, 248, 255, 0) !important;
+    border-color: white !important;
+    border-width: 1px !important;
+}
